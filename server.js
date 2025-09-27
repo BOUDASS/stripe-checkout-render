@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.post('/create-checkout-session', async (req, res) => {
   const { panier } = req.body;
+ console.log("retrieving sessionId", panier);
 
   try {
     const session = await stripe.checkout.sessions.create({
