@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.post('/create-checkout-session', async (req, res) => {
   const { panier } = req.body;
- console.log("retrieving sessionId", panier);
+ console.log("retrieving sessionId", panier,process.env.STRIPE_SECRET_KEY);
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -21,7 +21,7 @@ app.post('/create-checkout-session', async (req, res) => {
       success_url: 'https://votresite.com/success',
       cancel_url: 'https://votresite.com/cancel',
     });
-
+    onsole.error(error);
     res.json({ id: session.id });
   } catch (error) {
     console.error(error);
