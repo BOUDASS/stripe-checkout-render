@@ -12,14 +12,29 @@ app.post('/create-checkout-session', async (req, res) => {
 
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      /* payment_method_types: ['card'],
       line_items: panier.map(item => ({
         price: item.id,
         quantity: item.quantity
       })),
       mode: 'payment',
       success_url: 'https://votresite.com/success',
-      cancel_url: 'https://votresite.com/cancel',
+      cancel_url: 'https://votresite.com/cancel', */
+
+      payment_method_types: ['card'],
+  mode: 'payment',
+  line_items: [{
+    price_data: {
+      currency: 'eur',
+      product_data: {
+        name: 'Produit Exemple',
+      },
+      unit_amount: 2000,
+    },
+    quantity: 1,
+  }],
+  success_url: `${req.headers.origin}/success`,
+  cancel_url: `${req.headers.origin}/cancel`,
     });
     //console.error(error);
     res.json({ id: session.id });
