@@ -21,7 +21,7 @@ app.post('/create-checkout-session', async (req, res) => {
       success_url: 'https://votresite.com/success',
       cancel_url: 'https://votresite.com/cancel',
     });
-    onsole.error(error);
+    //console.error(error);
     res.json({ id: session.id });
   } catch (error) {
     console.error(error);
