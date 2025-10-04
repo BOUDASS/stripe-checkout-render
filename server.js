@@ -8,12 +8,7 @@ app.use(express.json());
 
 app.post('/create-checkout-session', async (req, res) => {
     const { panier } = req.body;
-    console.log("retrieving sessionId", panier, process.env.STRIPE_SECRET_KEY);
-
-    try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: panier.map(item => ({
+    const products = panier.map(item => ({
                 price_data: {
                     currency: 'eur',
                     product_data: {
@@ -22,7 +17,13 @@ app.post('/create-checkout-session', async (req, res) => {
                     unit_amount: item.price,
                 },
                 quantity: item.quantity
-            })),
+            }))
+    console.log("retrieving sessionId", products, panier);
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: products,
             mode: 'payment',
             success_url: `${req.headers.origin}/success`,
             cancel_url: `${req.headers.origin}/cancel`,
